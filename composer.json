@@ -1,0 +1,29 @@
+{
+    "name": "tshiamobhuda/aoc-solutions",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Tshiamo Bhuda",
+            "email": "tshiamobhuda@gmail.com"
+        }
+    ],
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.7",
+        "friendsofphp/php-cs-fixer": "^3.40"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "require": {
+        "symfony/console": "^6.3",
+        "nette/php-generator": "^4.1",
+        "nikic/php-parser": "^4.17"
+    }
+}
