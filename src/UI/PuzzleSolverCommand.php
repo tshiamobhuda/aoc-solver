@@ -33,14 +33,27 @@ class PuzzleSolverCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
         try {
+            $day = $input->getArgument('day');
+            if (!is_numeric($day)) {
+                throw new \RuntimeException(sprintf('Please provide a valid day [numeric value], (%s:%s) provided', gettype($day), $day));
+            }
+
+            $part = $input->getArgument('part');
+
+            if (!in_array($part, ['a', 'b'])) {
+                throw new \RuntimeException(sprintf('Please provide a valid part [either `a`, `b`], (%s:%s) provided', gettype($part), $part));
+            }
+
+            $useTestData = $input->getOption('dry-run');
+
             $repo = new SimplePuzzleInputRepository();
             $solver = new Solver();
             $service = new SolveChallengeService($repo, $solver);
 
             $result = $service->execute(
-                (int) $input->getArgument('day'),
-                $input->getArgument('part'),
-                $input->getOption('dry-run'),
+                (int) $day,
+                $part,
+                $useTestData,
             );
 
             $io->section('Results:');
