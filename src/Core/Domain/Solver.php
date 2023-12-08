@@ -1,5 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of tshiamobhuda/aoc-php-solver.
+ *
+ * (c) Tshaimo Bhuda <tshiamobhuda@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace App\Core\Domain;
 
 class Solver
@@ -7,6 +18,13 @@ class Solver
     public const PRE_FQCN = 'App\Resource\Solution\Day';
 
     /**
+     * Solves a part of the challenge
+     *
+     * @param PuzzleInput $input The puzzle input to use
+     * @param Puzzle $puzzle The puzzle to solve
+     *
+     * @return string The solution
+     *
      * @throws PuzzleException
      */
     public function solve(PuzzleInput $input, Puzzle $puzzle): string
@@ -15,7 +33,6 @@ class Solver
         $class = self::PRE_FQCN . $puzzle->day();
 
         try {
-            //
             $class = new \ReflectionClass(self::PRE_FQCN . $puzzle->day());
 
             //instantiate Solution
