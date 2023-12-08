@@ -1,6 +1,8 @@
 {
-    "name": "tshiamobhuda/aoc-solutions",
+    "name": "tshiamobhuda/aoc-php-solver",
     "type": "project",
+    "license": "MIT",
+    "url": "https://github.com/aoc-php-solver",
     "autoload": {
         "psr-4": {
             "App\\": "src/"
@@ -14,7 +16,8 @@
     ],
     "require-dev": {
         "squizlabs/php_codesniffer": "^3.7",
-        "friendsofphp/php-cs-fixer": "^3.40"
+        "friendsofphp/php-cs-fixer": "^3.40",
+        "captainhook/captainhook": "^5.0"
     },
     "config": {
         "allow-plugins": {
@@ -22,8 +25,12 @@
         }
     },
     "require": {
+        "php": ">=8.1",
         "symfony/console": "^6.3",
         "nette/php-generator": "^4.1",
         "nikic/php-parser": "^4.17"
+    },
+    "scripts": {
+        "post-autoload-dump": "vendor/bin/captainhook install -f --only-enabled"
     }
 }
