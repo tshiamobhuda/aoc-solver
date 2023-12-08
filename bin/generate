@@ -1,0 +1,74 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of tshiamobhuda/aoc-php-solver.
+ *
+ * (c) Tshaimo Bhuda <tshiamobhuda@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+use Nette\PhpGenerator\PhpFile;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\SingleCommandApplication;
+use Symfony\Component\Console\Style\SymfonyStyle;
+
+require_once __DIR__ . "/../vendor/autoload.php";
+
+(new SingleCommandApplication())
+    ->setName("Generate AOC solution file") // Name of the Command Application
+    ->setCode(
+        function (InputInterface $input, OutputInterface $output) {
+            // use Symfony's fancy styles to make things look cleaner
+            $io = new SymfonyStyle($input, $output);
+
+            // defines the boilerplate solution file all generate solution will base from
+            $tempFilePath = __DIR__ . "/../misc/day.solution.php";
+
+            try {
+                // retrieve user's input
+                $day = $io->ask('What is the day', null, function (string $number): int {
+                    if (!is_numeric($number)) {
+                        throw new \RuntimeException('You must type a number.');
+                    }
+
+                    return (int) $number;
+                });
+
+                // load boilerplate solution file
+                $file = PhpFile::fromCode(file_get_contents($tempFilePath));
+
+                // rename class name to `Day$day`
+                $data = str_replace("DayNum", "Day$day", $file->__toString());
+
+                // generate solution and empty input files
+                $outputFilePath = __DIR__ . "/../src/Resource";
+                $isSolutionFileCreated = file_put_contents("$outputFilePath/Solution/Day$day.php", $data);
+                $isTestInputFileCreated = file_put_contents("$outputFilePath/Input/day.$day.test.txt", '');
+                $isInputFileCreated = file_put_contents("$outputFilePath/Input/day.$day.txt", '');
+
+                // simple handling of file creation errors 
+                if (!$isSolutionFileCreated && !$isTestInputFileCreated && !$isInputFileCreated) {
+                    $io->error("Failed to create Advent of Code solution files: [Day$day.php, day.$day.test.txt ,day.$day.txt]");
+
+                    return Command::FAILURE;
+                }
+
+                // nothing bad happened, flash something nice to user
+                $io->success("Files created: [Day$day.php, day.$day.test.txt ,day.$day.txt]\nlocation: [" . realpath($outputFilePath) . "]");
+
+                return Command::SUCCESS;
+            } catch (\Exception $exception) {
+                $io->error(['File: ' . $exception->getFile(), 'Line: ' . $exception->getLine(), 'Message: ' . $exception->getMessage(),]);
+
+                return Command::FAILURE;
+            }
+        }
+    )
+    ->run();
