@@ -17,7 +17,8 @@
     "require-dev": {
         "squizlabs/php_codesniffer": "^3.7",
         "friendsofphp/php-cs-fixer": "^3.40",
-        "captainhook/captainhook": "^5.0"
+        "captainhook/captainhook": "^5.0",
+        "symfony/var-dumper": "^6.3"
     },
     "config": {
         "allow-plugins": {
@@ -31,6 +32,6 @@
         "nikic/php-parser": "^4.17"
     },
     "scripts": {
-        "post-autoload-dump": "vendor/bin/captainhook install -f --only-enabled"
+        "post-install-cmd": "vendor/bin/captainhook install -f --only-enabled"
     }
 }

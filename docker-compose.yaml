@@ -3,8 +3,10 @@ version: '3'
 services:
   aoc-solver:
     build: '.'
+    environment:
+      - XDEBUG_SESSION=1
     volumes:
       - ./:/usr/src/aoc_solver
     stdin_open: true
     tty: true
-    command: bash
+    command: bash -c 'composer install --no-interaction && echo -e "\\n\\nREADY!!! 🐘 🙂 🐳 \\n\\n" && bash'
